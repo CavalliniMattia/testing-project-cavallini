@@ -23,5 +23,6 @@ export const newOrder = (customerInfo: {
       email: customerInfo.email,
     },
   };
+
   return order;
 };
