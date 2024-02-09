@@ -1,5 +1,6 @@
 import { newOrder } from "./foo";
 import { addGiftcard } from "./foo";
+import { getAmount } from "./foo";
 
 describe("Test in classe", () => {
   // Sezione test newOrder
@@ -190,5 +191,26 @@ describe("Test in classe", () => {
 
     expect(updatedOrder.giftcards).toHaveLength(2);
     expect(updatedOrder.giftcards[1]).toEqual(giftcard);
+  });
+
+  test("Test per restituire i totali corretti per un array vuoto di giftcard", () => {
+    const totals = getAmount([]);
+    expect(totals.importoTotale).toBe(0);
+    expect(totals.iva).toBe(0);
+    expect(totals.totaleDaPagare).toBe(0);
+  });
+
+  test("Test per restituire i totali corretti per un array di giftcard con valori specifici", () => {
+    const giftcards = [
+      { taglio: 20, quantità: 2 },
+      { taglio: 50, quantità: 1 },
+    ];
+    const totals = getAmount(giftcards);
+    // Importo totale 40 + 50 = 90
+    expect(totals.importoTotale).toBe(90);
+    // IVA 22% dell'importo totale 90 * 0.22 = 19.80
+    expect(totals.iva).toBe(19.8);
+    // Importo totale + IVA 90 + 19.80 = 109.80
+    expect(totals.totaleDaPagare).toBe(109.8);
   });
 });
