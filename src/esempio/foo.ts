@@ -80,3 +80,29 @@ export const addGiftcard = (
 
   return order;
 };
+
+export const getAmount = (
+  giftcards: {
+    taglio: number;
+    quantità: number;
+  }[]
+): {
+  importoTotale: number;
+  iva: number;
+  totaleDaPagare: number;
+} => {
+  const importoTotale = giftcards.reduce(
+    (acc, giftcard) => acc + giftcard.taglio * giftcard.quantità,
+    0
+  );
+
+  const iva = importoTotale * 0.22;
+
+  const totaleDaPagare = importoTotale + iva;
+
+  return {
+    importoTotale,
+    iva,
+    totaleDaPagare,
+  };
+};
